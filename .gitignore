@@ -1,0 +1,40 @@
+--- Configuration File ---
+IMPORTANT: Never commit configuration files that contain sensitive data
+like API tokens or passwords.
+config.ini
+
+--- Python Virtual Environments ---
+A virtual environment should not be committed.
+Instead, commit a requirements.txt file.
+venv/
+env/
+.venv/
+.env/
+
+--- Python Cache & Bytecode ---
+pycache/
+*.pyc
+*.pyo
+*.pyd
+
+--- IDE & Editor Directories ---
+JetBrains PyCharm
+.idea/
+
+Visual Studio Code
+.vscode/
+
+--- Operating System Files ---
+macOS
+.DS_Store
+
+Windows
+Thumbs.db
+
+--- Logging ---
+*.log
+
+--- Distribution / Packaging ---
+build/
+dist/
+*.egg-info/
