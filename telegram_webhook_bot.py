@@ -1,55 +1,39 @@
-import configparser
-import logging
-from flask import Flask, request, abort
-import telegram
-
-# --- Basic Logging Setup ---
-# This will help you see what's happening and debug issues.
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
-
-# --- Flask App and Configuration ---
-app = Flask(__name__)
-config = configparser.ConfigParser()
-
-try:
-    config.read('config.ini')
-    # Use .get() for safer access to config values
-    telegram_token = config.get('TELEGRAM', 'TOKEN')
-    chat_id_string = config.get('TELEGRAM', 'CHAT_ID', fallback='')  # Fallback to empty string if not found
-
-    if not telegram_token:
-        logger.error("TELEGRAM 'TOKEN' not found in config.ini. Exiting.")
-        exit()
-
-except (configparser.NoSectionError, FileNotFoundError):
-    logger.error("config.ini not found or [TELEGRAM] section is missing. Please create it.")
-    exit()
-
-# Split chat IDs, filter out any empty strings that might result from extra commas
-chat_ids = [chat_id.strip() for chat_id in chat_id_string.split(',') if chat_id.strip()]
-
-if not chat_ids:
-    logger.warning("No chat IDs found in config.ini. The bot will receive webhooks but won't send notifications.")
-
-bot = telegram.Bot(token=telegram_token)
-logger.info(f"Bot initialized. Ready to send notifications to {len(chat_ids)} chat(s).")
-
+# Replace your old woocommerce_webhook function with this one.
+# The rest of your script stays the same.
 
 @app.route('/webhook', methods=['POST'])
 def woocommerce_webhook():
     """Receives webhook from WooCommerce and sends a Telegram notification."""
 
+    # --- NEW DEBUGGING LOGS ---
+    # We will log everything we receive before we try to process it.
+    logger.info("--- New Request Received ---")
+    try:
+        logger.info(f"Request Headers: {dict(request.headers)}")
+        logger.info(f"Request Raw Body: {request.get_data(as_text=True)}")
+        logger.info(f"Flask's 'is_json' check result: {request.is_json}")
+    except Exception as e:
+        logger.error(f"Error during initial logging: {e}")
+    logger.info("--- End of Raw Request Data ---")
+    # --- END OF DEBUGGING LOGS ---
+
+
     # Check if the request has JSON data
     if not request.is_json:
-        logger.warning("Received a non-JSON request to webhook endpoint.")
-        return "Request must be JSON", 400
+        logger.warning("Condition 'if not request.is_json' was TRUE. Rejecting with 400.")
+        return "Request does not appear to be JSON", 400
 
-    order_data = request.get_json()
-    logger.info(f"Received webhook for Order ID: {order_data.get('id', 'N/A')}")
+    try:
+        order_data = request.get_json()
+        if not order_data:
+            logger.warning("Request had JSON mime type, but body was empty or invalid.")
+            return "JSON body is empty or invalid", 400
+    except Exception as e:
+        logger.error(f"Failed to parse JSON body. Error: {e}")
+        return "Failed to parse JSON body", 400
+
+
+    logger.info(f"Successfully parsed JSON. Order ID: {order_data.get('id', 'N/A')}")
 
     # --- Create a more detailed and safer message ---
     # Using .get() is safer than direct access like order_data['key']
@@ -81,9 +65,3 @@ def woocommerce_webhook():
             logger.error(f"An unexpected error occurred while sending to {chat_id}. Error: {e}")
 
     return "Webhook received successfully", 200
-
-
-if __name__ == '__main__':
-    # For production, you should use a proper WSGI server like Gunicorn or uWSGI
-    # Example: gunicorn --bind 0.0.0.0:4430 your_script_name:app
-    app.run(host='0.0.0.0', port=443)
