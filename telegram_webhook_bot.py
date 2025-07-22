@@ -86,4 +86,4 @@ def woocommerce_webhook():
 if __name__ == '__main__':
     # For production, you should use a proper WSGI server like Gunicorn or uWSGI
     # Example: gunicorn --bind 0.0.0.0:4430 your_script_name:app
-    app.run(host='0.0.0.0', port=4430)
+    app.run(host='0.0.0.0', port=443)
