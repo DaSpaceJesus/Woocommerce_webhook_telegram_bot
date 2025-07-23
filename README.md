@@ -88,8 +88,9 @@ Secret: Leave blank unless you plan to implement signature verification.
 
 Click "Save webhook".
 
-### 7. Make sure your virtual environment is active
-source venv/bin/activate
+### 7. Configuring port
+Open ports on Server: allow used port on firewall and avoid using random ports. use known ones.
+the port can be configured on last line of script.
 
 ### 8. Run the Flask app
 python telegram_webhook_bot.py
@@ -101,6 +102,3 @@ The server will start
 Create a systemd Service: Write a service file to ensure the bot runs continuously and restarts automatically on failure or server reboot.
 
 Secure with HTTPS: Use Certbot and Let's Encrypt to enable HTTPS on your domain, securing the data sent from WooCommerce.
-
-Open ports on Server: allow used port on firewall and avoid using random ports. use known ones.
-the port can be configured on last line of script.
