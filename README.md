@@ -1,4 +1,4 @@
-# WooCommerce to Telegram Order Notifier
+# WooCommerce to Telegram Order Notifier Bot
 A simple yet powerful Python bot that instantly sends new WooCommerce order notifications to one or more Telegram chats. This project uses a Flask web server to listen for WooCommerce webhooks and the python-telegram-bot library to dispatch alerts.
 
 
