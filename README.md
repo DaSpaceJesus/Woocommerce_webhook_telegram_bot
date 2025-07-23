@@ -84,7 +84,7 @@ Topic: Select Order Created.
 
 Delivery URL: The URL of your server where the bot is listening. For example: http://your-domain.com/webhook or http://your-server-ip:port/webhook.
 
-Secret: Leave blank unless you plan to implement signature verification.
+Secret: Leave blank!
 
 Click "Save webhook".
 
