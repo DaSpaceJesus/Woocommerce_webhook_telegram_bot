@@ -11,7 +11,7 @@ Detailed Order Information: Messages include Order ID, status, customer name, to
 
 Easy Configuration: All settings (API tokens, chat IDs) are managed in a simple config.ini file.
 
-Robust and Production-Ready: Includes instructions for deploying with Gunicorn and Nginx for a stable, production environment.
+Robust and Production-Ready!
 
 Secure: Keeps your sensitive API tokens and chat IDs separate from the main codebase.
 
